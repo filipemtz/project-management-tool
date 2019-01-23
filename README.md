@@ -2,7 +2,7 @@
 
 Install apache, mysql, and php
 
-  sudo apt-get install apache2 mysql-server php php-{bcmath,bz2,intl,gd,mbstring,mcrypt,mysql,zip} libapache2-mod-php phpmyadmin php-mbstring php-gettext
+    sudo apt-get install apache2 mysql-server php php-{bcmath,bz2,intl,gd,mbstring,mcrypt,mysql,zip} libapache2-mod-php phpmyadmin php-mbstring php-gettext
 
 Starting Apache and MySQL on boot
 
