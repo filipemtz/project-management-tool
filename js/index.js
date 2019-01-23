@@ -29,7 +29,7 @@ function create_task_html(value, parent_id)
             "<a href='#' onclick='$(\"#edit_form_" + value['id'] + "\").show(); $(\"#new_name"+value['id']+"\").focus(); $(\"#task"+value['id']+"\").hide();'><i class='material-icons tiny'>edit</i></a> " + 
             "<a href='#' onclick='if(confirm(\"Are you sure you want to remove the task, and all subtasks?\")) remove_task(" + value['id'] + ", " + parent_id + "); '><i class='material-icons tiny'>close</i></a> ";
             
-    if (value['observations'].length > 0)
+    if (value['observations'])
         str += "<span id='task_" + value['id'] + "_observations' style='color:gray'> - " + value['observations'] + "</span>";
             
     str += "</div>";
