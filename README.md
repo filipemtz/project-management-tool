@@ -6,6 +6,9 @@ Install apache, mysql, and php
     p-{bcmath,bz2,intl,gd,mbstring,mcrypt,mysql,zip} \
     libapache2-mod-php phpmyadmin php-mbstring php-gettext
 
+When asked which server do you like to use choose apache by pressing space. 
+When asked if phpMyAdmin should create a database using dbconfig, choose no. 
+
 Starting Apache and MySQL on boot
 
     sudo systemctl enable apache2.service
