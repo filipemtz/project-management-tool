@@ -3,7 +3,7 @@
 Install apache, mysql, and php
 
     sudo apt-get install apache2 mysql-server php \
-    p-{bcmath,bz2,intl,gd,mbstring,mcrypt,mysql,zip} \
+    php-{bcmath,bz2,intl,gd,mbstring,mcrypt,mysql,zip} \
     libapache2-mod-php phpmyadmin php-mbstring php-gettext
 
 When asked which server do you like to use choose apache by pressing space. 
