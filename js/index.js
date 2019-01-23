@@ -15,10 +15,10 @@ function create_task_html(value, parent_id)
     str =  
         "<div id='edit_form_" + value['id']+ "' style='display:none' >" +
         "<a href='#' onclick='$(\"#task" + value['id'] + "\").show(); $(\"#edit_form_" + value['id'] + "\").hide();'><i class='material-icons tiny'>remove</i></a>" + 
-        "<input type='text' id='new_name" + value['id'] + "' value='" + value['name'] + "' /> " +
-        "<input type='date' id='new_deadline" + value['id'] + "' value='" + value['deadline'] + "' /> " + 
-        "<input type='text' id='new_observations" + value['id'] + "' value='" + value['observations'] + "' /> " + 
-        "<input onClick='update_task(" + value['id'] + ");' type='button' value='Update' />" +
+        "<input type='text' id='edit_new_name" + value['id'] + "' value='" + value['name'] + "' /> " +
+        "<input type='date' id='edit_new_deadline" + value['id'] + "' value='" + value['deadline'] + "' /> " + 
+        "<input type='text' id='edit_new_observations" + value['id'] + "' value='" + value['observations'] + "' /> " + 
+        "<input onClick='update_task(" + value['id'] + ", " + parent_id + ");' type='button' value='Update' />" +
         "</div>";
 
     str += "<div id='task" + value['id'] + "'> " + 
@@ -27,7 +27,7 @@ function create_task_html(value, parent_id)
             "<span id='task_"+value['id']+"_name'>" + value['name'] + "</span> " +
             "(<span id='task_"+value['id']+"_deadline'>"+ value['deadline'] + "</span>)</a> " +
             "<a href='#' onclick='$(\"#edit_form_" + value['id'] + "\").show(); $(\"#new_name"+value['id']+"\").focus(); $(\"#task"+value['id']+"\").hide();'><i class='material-icons tiny'>edit</i></a> " + 
-            "<a href='#' onclick='remove_task(" + value['id'] + ", " + parent_id + ")'><i class='material-icons tiny'>close</i></a> ";
+            "<a href='#' onclick='if(confirm(\"Are you sure you want to remove the task, and all subtasks?\")) remove_task(" + value['id'] + ", " + parent_id + "); '><i class='material-icons tiny'>close</i></a> ";
             
     if (value['observations'].length > 0)
         str += "<span id='task_" + value['id'] + "_observations' style='color:gray'> - " + value['observations'] + "</span>";
@@ -117,23 +117,26 @@ function save_task(parent_id)
     });
 }
 
-function update_task(id)
+function update_task(id, parent_id)
 {
     $.ajax({method: "POST", url: "php/updatetask.php", 
         data: {"id": id,
-                "name": $("#new_name" + id).val(), 
-                "deadline": $("#new_deadline" + id).val(), 
-                "observations": $("#new_observations" + id).val()
+                "name": $("#edit_new_name" + id).val(), 
+                "deadline": $("#edit_new_deadline" + id).val(), 
+                "observations": $("#edit_new_observations" + id).val()
         },
     }).done(function(data){
         var result = $.parseJSON(data);
         if (result != 1) alert("fail!");
         else {
-            $('#task_' + id + '_name').text($("#new_name" + id).val());
-            $('#task_' + id + '_deadline').text($("#new_deadline" + id).val());
-            $('#task_' + id + '_observations').text($("#new_observations" + id).val());
+            /*
+            $('#task_' + id + '_name').text($("#edit_new_name" + id).val());
+            $('#task_' + id + '_deadline').text($("#edit_new_deadline" + id).val());
+            $('#task_' + id + '_observations').text($("#edit_new_observations" + id).val());
             $('#task' + id).show();                    
             $('#edit_form_' + id).hide();
+            */
+            reload_subtasks(parent_id);
         }
     });
 }
