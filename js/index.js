@@ -1,13 +1,24 @@
 
-function create_task_html(value)
+function remove_task(task_id, parent_id)
+{
+    $.ajax({method: "POST", url: "php/removetask.php", data: {"task_id": task_id},}).done(function(data){
+        var result = $.parseJSON(data);
+        if (result != 1) alert("fail!");
+        else { 
+            reload_subtasks(parent_id); 
+        }
+    });    
+}
+
+function create_task_html(value, parent_id)
 {
     return "<div id='task" + value['id'] + "'> " + 
             "<a href='#' onclick='toggle_subtasks(" + value['id'] + ")'>" + 
-            "<i class='material-icons tiny'>keyboard_arrow_right</i>" +
+            "<i id='icon" + value['id'] + "' class='material-icons tiny'>keyboard_arrow_right</i>" +
             value['name'] + " ("+
             value['deadline'] + ")</a> "+
             "<a href='#'> <i class='material-icons tiny'>edit</i></a> " + 
-            "<a href='#'> <i class='material-icons tiny'>close</i></a> " + 
+            "<a href='#' onclick='remove_task(" + value['id'] + ", " + parent_id + ")'> <i class='material-icons tiny'>close</i></a> " + 
             "<span style='color:gray'> - " + value['observations'] + "</span>" + 
             "<div style='padding-left:2%' id='subtasks" + value['id'] + "'></div>" +
             "</div>";
@@ -34,13 +45,11 @@ function add_subtasks_to_container(name, parent_id)
 
         // from result create a string of data and append to the div 
         $.each(tasks, function(key, value) {
-             string += create_task_html(value); 
+             string += create_task_html(value, parent_id); 
         });
 
         string += "<div id='form_" + parent_id + "'></div>";
-        //string += "<input type='button' value='+' onclick='add_form(" + parent_id + ")' />";
         string += "<a href='#' onclick='add_form(" + parent_id + ")'> <i class='material-icons tiny'>add</i></a>";
-        //string += "</div>";
 
         $(name).html(string); 
     });
@@ -55,7 +64,7 @@ function reload_subtasks(parent_id)
 function toggle_subtasks(parent_id)
 {
     // toggle icon
-    icon_ref = $('#task' + parent_id).find('i');
+    icon_ref = $('#icon' + parent_id).find('i');
 
     if (icon_ref.text() == 'keyboard_arrow_right')
         icon_ref.text('keyboard_arrow_down');
@@ -73,7 +82,7 @@ function toggle_subtasks(parent_id)
 
 function list_root_tasks()
 {
-    add_subtasks_to_container('#records', '0')
+    add_subtasks_to_container('#subtasks0', '0')
 }
 
 function save_task(parent_id)
