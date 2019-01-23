@@ -6,7 +6,7 @@
     if (strlen($parent_id) == 0) 
         $parend_it = 0;
 
-    $query_result = run_query("SELECT * FROM task where parent='$parent_id'");
+    $query_result = run_query("SELECT * FROM task where parent='$parent_id' ORDER BY deadline ASC;");
     $tasks = select2array($query_result);
 
     echo json_encode($tasks);
