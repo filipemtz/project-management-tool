@@ -1,10 +1,25 @@
+<?php 
+
+session_start();
+
+if (!isset($_SESSION['user_data']))
+{
+    header('Location: /todolist/login.php');
+    die();
+}
+?>
+
 <html>
 <head>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 </head>
 <body>
 
-<u> TODO List </u> 
+<div>
+<div style='display:inline-block;width:49%;'> <u> TODO List </u> </div>
+<div style='display:inline-block;width:49%;text-align:right;'> <a href='php/logout.php'>Logout</a> </div>
+</div>
+
 <br>
 <br>
 

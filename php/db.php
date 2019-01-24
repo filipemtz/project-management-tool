@@ -13,8 +13,13 @@ function run_query($query)
          die("Connection to database failed: " . $conn->connect_error);
 
     $result = $conn->query($query);
-    $conn->close();
 
+    if (!$result)
+        $_SESSION['error_message'] = $conn->error;
+    else
+        $_SESSION['error_message'] = '';
+
+    $conn->close();
     return $result;
 }
 
