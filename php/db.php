@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 function run_query($query)
 {
     $host         = "localhost";
