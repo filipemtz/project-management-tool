@@ -10,7 +10,8 @@
 
     $user_id = $_SESSION['user_data']['id'];
 
-    $query = "SELECT * FROM task where (user_id='$user_id') ORDER BY name ASC;";
+    $sort_field = $_POST['sort_by'];
+    $query = "SELECT * FROM task where (user_id='$user_id') ORDER BY $sort_field ASC;";
     $query_result = run_query($query);
     $tasks = select2array($query_result);
 

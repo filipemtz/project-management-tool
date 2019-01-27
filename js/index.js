@@ -43,7 +43,14 @@ function create_task_html(value, parent_id)
             "<input type='checkbox' onclick='if(confirm(\"Are you sure you want to change the conclusion status of the task, and all subtasks?\")) update_task_conclusion_status(" + value['id'] + ", " + parent_id + "); ' " + status + " /> ";
             
     if (value['observations'])
-        str += "<span id='task_" + value['id'] + "_observations' style='color:gray'> - " + value['observations'] + "</span>";
+    {
+        obs = value['observations'];
+
+        if (obs.length > 200)
+            obs = obs.substring(0, 200) + '...';
+
+        str += "<span id='task_" + value['id'] + "_observations' style='color:gray'> - " + obs + "</span>";
+    }
             
     str += "</div>";
     str += "<div style='padding-left:2%' id='subtasks" + value['id'] + "'></div>";
@@ -53,7 +60,7 @@ function create_task_html(value, parent_id)
 
 function update_parent_selector(task_id, parent_id)
 {
-    $.ajax({method: "POST", url: "php/getalltasks.php"}).done(function(data) { 
+    $.ajax({method: "POST", url: "php/getalltasks.php", data: {"sort_by": "name"}}).done(function(data) { 
         var tasks = $.parseJSON(data);
         var string = "<option value='0'>Root</option>";
 
@@ -66,7 +73,6 @@ function update_parent_selector(task_id, parent_id)
         $("#edit_new_parent" + task_id).html(string); 
         $("#edit_new_parent" + task_id).val(parent_id);
     });
-        
 }
 
 function add_form(parent_id)
@@ -130,6 +136,52 @@ function list_root_tasks()
     add_subtasks_to_container('#subtasks0', '0')
 }
 
+function list_next_deadlines()
+{
+    $.ajax({method: "POST", url: "php/getalltasks.php", data: {'sort_by': 'deadline'}}).done(function(data) { 
+        var tasks = $.parseJSON(data);
+        var string = "<table>";
+        string += "<tr><td class='name_column'><b>Name</b></td><td class='deadline_column'><b>Deadline</b></td><td class='observations_column'><b>Observations</b></td></tr>";
+
+        // from result create a string of data and append to the div 
+        $.each(tasks, function(key, value) {
+            obs = value['observations'];
+
+            if (obs.length > 200)
+                obs = obs.substring(0, 200) + '...';
+        
+            deadline = new Date(value['deadline']);
+            today = new Date();
+            deadline_minus_5 = new Date(deadline);
+            deadline_minus_5.setDate(deadline.getDate() - 5);
+
+            color = "";
+            if (today > deadline)
+                color = "style='color:red;'";
+            else if (today > deadline_minus_5)
+                color = "style='color:yellow;'";
+
+            string += "<tr " + color + ">";
+            string += "<td class='name_column'>" + value['name'] + "</td>";
+            string += "<td class='deadline_column'>" + value['deadline'] + "</td>";
+            string += "<td class='observations_column'>" + obs + "</td>";
+            string += "</tr>";
+        });
+
+        string += "</table>";
+        $("#next_deadlines").html(string);
+        $("#main").css('width', '49%');
+        $("#next_deadlines").css('width', '49%');
+        $("#next_deadlines").find('td').css('padding-left', '5px');
+        $("#next_deadlines").find('td').css('padding-right', '10px');
+        $("#next_deadlines").find('td').css('vertical-align', 'top');
+        $("#next_deadlines").find('td').css('text-align', 'justify');
+        $(".name_column").css('width', '20%');
+        $(".deadline_column").css('width', '20%');
+        $(".observations_column").css('width', '59%');
+    });
+}
+
 function save_task(parent_id)
 {
     $.ajax({method: "POST", url: "php/savetask.php", 
@@ -190,8 +242,21 @@ function update_task_conclusion_status(id, parent_id)
 
 function toggle_view_complete_tasks()
 {
-    $.ajax({method: "POST", url: "php/toggle_view_incomplete.php"}).done(function(data){
+    $.ajax({method: "POST", url: "php/toggle_view.php", data: {"which": "view_complete"}}).done(function(data){
         reload_subtasks(0);
+    });
+}
+
+function toggle_view_next_deadlines()
+{
+    $.ajax({method: "POST", url: "php/toggle_view.php", data: {"which": "view_next_deadlines"}}).done(function(data){
+        if (data == 1)
+        {
+            list_next_deadlines();
+            $("#next_deadlines").show();
+        }
+        else
+            $("#next_deadlines").hide();
     });
 }
 
