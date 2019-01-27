@@ -19,7 +19,7 @@ $observations = $_POST['observations'];
 if (strlen($parent_id) == 0)
     $parent_id = 0;
 
-$query = "INSERT INTO task(name, deadline, observations, parent, user_id) VALUES('$name', '$deadline', '$observations', '$parent_id', '$user_id');";
+$query = "INSERT INTO task(name, deadline, observations, parent, user_id, status) VALUES('$name', '$deadline', '$observations', '$parent_id', '$user_id', '0');";
 $query_result = run_query($query);
 
 if ($query_result === TRUE) echo 1;

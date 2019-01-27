@@ -17,7 +17,21 @@ if (!isset($_SESSION['user_data']))
 
 <div>
 <div style='display:inline-block;width:49%;'> <u> TODO List </u> </div>
-<div style='display:inline-block;width:49%;text-align:right;'> <a href='php/logout.php'>Logout</a> </div>
+<div style='display:inline-block;width:49%;text-align:right;'> 
+    <a href='php/logout.php'>Logout</a> 
+</div>
+</div>
+
+<div>
+<br>
+<input type='checkbox' onclick='toggle_view_complete_tasks()' 
+<?php 
+if (isset($_SESSION['view_complete'])) 
+    if ($_SESSION['view_complete']) 
+        echo 'checked'; 
+?> 
+/> View Concluded Tasks
+<br>
 </div>
 
 <br>
