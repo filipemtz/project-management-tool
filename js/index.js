@@ -49,7 +49,7 @@ function create_task_html(value, parent_id)
         if (obs.length > 200)
             obs = obs.substring(0, 200) + '...';
 
-        str += "<span id='task_" + value['id'] + "_observations' style='color:gray'> - " + obs + "</span>";
+        str += "<span id='task_" + value['id'] + "_observations' style='color:gray;text-align:justify;'> - " + obs + "</span>";
     }
             
     str += "</div>";
@@ -159,25 +159,24 @@ function list_next_deadlines()
             if (today > deadline)
                 color = "style='color:red;'";
             else if (today > deadline_minus_5)
-                color = "style='color:yellow;'";
+                color = "style='color:blue;'";
 
             string += "<tr " + color + ">";
             string += "<td class='name_column'>" + value['name'] + "</td>";
             string += "<td class='deadline_column'>" + value['deadline'] + "</td>";
-            string += "<td class='observations_column'>" + obs + "</td>";
+            string += "<td class='observations_column' style='text-align:justify;'>" + obs + "</td>";
             string += "</tr>";
         });
 
         string += "</table>";
         $("#next_deadlines").html(string);
-        $("#main").css('width', '49%');
-        $("#next_deadlines").css('width', '49%');
+        $("#main").css('width', '48%');
+        $("#next_deadlines").css('width', '48%');
         $("#next_deadlines").find('td').css('padding-left', '5px');
         $("#next_deadlines").find('td').css('padding-right', '10px');
         $("#next_deadlines").find('td').css('vertical-align', 'top');
-        $("#next_deadlines").find('td').css('text-align', 'justify');
-        $(".name_column").css('width', '20%');
-        $(".deadline_column").css('width', '20%');
+        $(".name_column").css('width', '19%');
+        $(".deadline_column").css('width', '19%');
         $(".observations_column").css('width', '59%');
     });
 }
@@ -256,7 +255,10 @@ function toggle_view_next_deadlines()
             $("#next_deadlines").show();
         }
         else
+        {
             $("#next_deadlines").hide();
+            $("#main").css('width', '99%');
+        }
     });
 }
 

@@ -45,14 +45,14 @@ if (isset($_SESSION['view_next_deadlines']))
 <br>
 <br>
 
-<div id='main' style='display:inline-block;float:left;text-align:justify;'> 
+<div id='main' style='display:inline-block;float:left;'> 
 <div id="root"> 
 <div id="subtasks0"></div> 
 <div id="new"></div> 
 </div> 
 </div>
 
-<div id='next_deadlines' style='display:inline-block;float:right;text-align:justify;'> 
+<div id='next_deadlines' style='display:inline-block;float:right;'> 
 </div> 
 
 
