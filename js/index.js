@@ -140,8 +140,8 @@ function list_next_deadlines()
 {
     $.ajax({method: "POST", url: "php/getalltasks.php", data: {'sort_by': 'deadline'}}).done(function(data) { 
         var tasks = $.parseJSON(data);
-        var string = "<table width='100%'>";
-        string += "<tr><td width='20%' style='padding-left:10px;padding-right:10px;'><b>Name</b></td><td width='20%' style='padding-left:10px;padding-right:10px;'><b>Deadline</b></td><td width='75%' class='dont-break-out' style='padding-left:10px;padding-right:10px;'><b>Observations</b></td></tr>";
+        var string = "<table width='100%' >";
+        string += "<tr><td width='40%' style='padding-left:10px;padding-right:10px;border:solid;border-width:1px;'><b>Name</b></td><td width='15%' style='padding-left:10px;padding-right:10px;border:solid;border-width:1px;'><b>Deadline</b></td><td width='43%' class='dont-break-out' style='padding-left:10px;padding-right:10px;border:solid;border-width:1px;'><b>Observations</b></td></tr>";
 
         // from result create a string of data and append to the div 
         $.each(tasks, function(key, value) {
@@ -162,9 +162,9 @@ function list_next_deadlines()
                 color = "style='color:blue;'";
 
             string += "<tr " + color + ">";
-            string += "<td width='20%' style='padding-left:10px;padding-right:10px;'>" + value['name'] + "</td>";
-            string += "<td width='20%' style='padding-left:10px;padding-right:10px;'>" + value['deadline'] + "</td>";
-            string += "<td class='dont-break-out' width='75%' style='padding-left:10px;padding-right:10px;text-align:justify;'>" + obs + "</td>";
+            string += "<td width='40%' style='padding-left:10px;padding-right:10px;border:solid;border-width:1px;'>" + value['name'] + "</td>";
+            string += "<td width='15%' style='padding-left:10px;padding-right:10px;border:solid;border-width:1px;'>" + value['deadline'] + "</td>";
+            string += "<td class='dont-break-out' width='43%' style='padding-left:10px;padding-right:10px;text-align:justify;border:solid;border-width:1px;'>" + obs + "</td>";
             string += "</tr>";
         });
 
