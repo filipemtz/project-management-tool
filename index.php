@@ -12,6 +12,23 @@ if (!isset($_SESSION['user_data']))
 <html>
 <head>
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <style>
+    .dont-break-out {
+      /* These are technically the same, but use both */
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      -ms-word-break: break-all;
+      /* This is the dangerous one in WebKit, as it breaks things wherever */
+      word-break: break-all;
+      /* Instead use this non-standard one: */
+      word-break: break-word;
+      /* Adds a hyphen where the word breaks, if supported (No Blink) */
+      -ms-hyphens: auto;
+      -moz-hyphens: auto;
+      -webkit-hyphens: auto;
+      hyphens: auto;
+    }
+    </style>
 </head>
 <body>
 
@@ -45,16 +62,16 @@ if (isset($_SESSION['view_next_deadlines']))
 <br>
 <br>
 
-<div id='main' style='display:inline-block;float:left;'> 
-<div id="root"> 
-<div id="subtasks0"></div> 
-<div id="new"></div> 
+<div style='width:90%'>
+    <div id='main' style='display:inline-block;float:left;'> 
+        <div id="root"> 
+        <div id="subtasks0"></div> 
+        <div id="new"></div> 
+        </div> 
+    </div>
+    <div id='next_deadlines' style='display:inline-block;float:right;'> 
+    </div> 
 </div> 
-</div>
-
-<div id='next_deadlines' style='display:inline-block;float:right;'> 
-</div> 
-
 
 <script type="text/javascript" src="http://www.fmtz.com.br/js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/index.js"></script>

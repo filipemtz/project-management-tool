@@ -49,7 +49,7 @@ function create_task_html(value, parent_id)
         if (obs.length > 200)
             obs = obs.substring(0, 200) + '...';
 
-        str += "<span id='task_" + value['id'] + "_observations' style='color:gray;text-align:justify;'> - " + obs + "</span>";
+        str += "<span id='task_" + value['id'] + "_observations' class='dont-break-out' style='color:gray;text-align:justify;'> - " + obs + "</span>";
     }
             
     str += "</div>";
@@ -140,8 +140,8 @@ function list_next_deadlines()
 {
     $.ajax({method: "POST", url: "php/getalltasks.php", data: {'sort_by': 'deadline'}}).done(function(data) { 
         var tasks = $.parseJSON(data);
-        var string = "<table>";
-        string += "<tr><td class='name_column'><b>Name</b></td><td class='deadline_column'><b>Deadline</b></td><td class='observations_column'><b>Observations</b></td></tr>";
+        var string = "<table width='100%'>";
+        string += "<tr><td width='20%' style='padding-left:10px;padding-right:10px;'><b>Name</b></td><td width='20%' style='padding-left:10px;padding-right:10px;'><b>Deadline</b></td><td width='75%' class='dont-break-out' style='padding-left:10px;padding-right:10px;'><b>Observations</b></td></tr>";
 
         // from result create a string of data and append to the div 
         $.each(tasks, function(key, value) {
@@ -162,9 +162,9 @@ function list_next_deadlines()
                 color = "style='color:blue;'";
 
             string += "<tr " + color + ">";
-            string += "<td class='name_column'>" + value['name'] + "</td>";
-            string += "<td class='deadline_column'>" + value['deadline'] + "</td>";
-            string += "<td class='observations_column' style='text-align:justify;'>" + obs + "</td>";
+            string += "<td width='20%' style='padding-left:10px;padding-right:10px;'>" + value['name'] + "</td>";
+            string += "<td width='20%' style='padding-left:10px;padding-right:10px;'>" + value['deadline'] + "</td>";
+            string += "<td class='dont-break-out' width='75%' style='padding-left:10px;padding-right:10px;text-align:justify;'>" + obs + "</td>";
             string += "</tr>";
         });
 
@@ -172,12 +172,6 @@ function list_next_deadlines()
         $("#next_deadlines").html(string);
         $("#main").css('width', '48%');
         $("#next_deadlines").css('width', '48%');
-        $("#next_deadlines").find('td').css('padding-left', '5px');
-        $("#next_deadlines").find('td').css('padding-right', '10px');
-        $("#next_deadlines").find('td').css('vertical-align', 'top');
-        $(".name_column").css('width', '19%');
-        $(".deadline_column").css('width', '19%');
-        $(".observations_column").css('width', '59%');
     });
 }
 
