@@ -14,7 +14,7 @@
 
     function remove_task($id, $user_id)
     {
-        $query = "SELECT * FROM task where parent='$id';";
+        $query = "SELECT * FROM task where parent='$id' AND user_id='$user_id';";
 
         $query_result = run_query($query);
         $tasks = select2array($query_result);
