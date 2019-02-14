@@ -80,9 +80,24 @@ $(function(){
     list_root_tasks();
 
     <?php 
+
+    $view_deadlines_active = FALSE;
+
     if (isset($_SESSION['view_next_deadlines'])) 
+    {
         if ($_SESSION['view_next_deadlines']) 
+        {            
+            $view_deadlines_active = TRUE;
             echo 'list_next_deadlines()'; 
+        }
+    }
+
+    if (! $view_deadlines_active)
+    {
+        echo "$('#next_deadlines').hide();\n";
+        echo "$('#main').css('width', '99%');";
+    }
+
     ?> 
 }); 
 </script> 

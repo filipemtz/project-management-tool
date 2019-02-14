@@ -114,14 +114,6 @@ function reload_subtasks(parent_id)
 
 function toggle_subtasks(parent_id)
 {
-    // toggle icon
-    icon_ref = $('#icon' + parent_id).find('i');
-
-    if (icon_ref.text() == 'keyboard_arrow_right')
-        icon_ref.text('keyboard_arrow_down');
-    else
-        icon_ref.text('keyboard_arrow_right');
-
     // toggle subtasks
     name = '#subtasks' + parent_id
 
@@ -129,6 +121,15 @@ function toggle_subtasks(parent_id)
         reload_subtasks(parent_id);
     else
         $(name).text('');
+
+    // toggle icon
+    icon_ref = $('#icon' + parent_id);
+
+    if (icon_ref.text() == 'keyboard_arrow_right')
+        icon_ref.text('keyboard_arrow_down');
+    else
+        icon_ref.text('keyboard_arrow_right');
+
 }
 
 function list_root_tasks()
