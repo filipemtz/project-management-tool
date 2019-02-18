@@ -29,6 +29,7 @@ if (in_array('error_message', $_SESSION))
 <form method='post' action='php/process_login.php'>
 Username: <input type='text' id='login_username' name='login_username' /> <br>
 Password: <input type='password' id='login_password' name='login_password' /> <br>
+<input type='checkbox' id='stay_connected' name='stay_connected' /> Remember me <br>
 <input type='submit' id='login_submit' onclick='login();' value='Submit' />
 </form>
 

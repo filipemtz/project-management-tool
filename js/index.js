@@ -10,18 +10,31 @@ function remove_task(task_id, parent_id)
     });    
 }
 
+
+function get_running_icon_by_status(status)
+{
+    if (status == 0)
+        running_icon = "play_arrow";
+    else
+        running_icon = "<span style='color:red'>pause</span>";    
+    return running_icon;
+}
+
+
 function create_task_html(value, parent_id)
 {
     if (value['status'] == 1)
     {
-        status = 'checked';
+        icon = 'done_all';
         color = "style='color:gray;'";
     }
     else
     {
-        status = '';
+        icon = 'crop_square';
         color = '';
     }
+    
+    running_icon = get_running_icon_by_status(value['running_status']);
 
     str =  
         "<div id='edit_form_" + value['id']+ "' style='display:none' >" +
@@ -29,6 +42,8 @@ function create_task_html(value, parent_id)
         "<input type='text' id='edit_new_name" + value['id'] + "' value='" + value['name'] + "' /> " +
         "<input type='date' id='edit_new_deadline" + value['id'] + "' value='" + value['deadline'] + "' /> " + 
         "<input type='text' id='edit_new_observations" + value['id'] + "' value='" + value['observations'] + "' /> " +
+        "<select id='edit_new_class" + value['id'] + "'>" + create_class_options(value['class']) + "</select> " + 
+        "<input type='text' id='edit_new_duration" + value['id'] + "' value='" + value['estimated_duration'] + "' /> hours " +
         "<select id='edit_new_parent" + value['id'] + "'><option value='" + value['parent'] + "'>--</option><option value='0'>Root</option></select> " + 
         "<input onClick='update_task(" + value['id'] + ", " + parent_id + ");' type='button' value='Update' />" +
         "</div>";
@@ -40,7 +55,8 @@ function create_task_html(value, parent_id)
             "(<span id='task_"+value['id']+"_deadline'>"+ value['deadline'] + "</span>)</a> " +
             "<a href='#' onclick='$(\"#edit_form_" + value['id'] + "\").show(); $(\"#new_name"+value['id']+"\").focus(); $(\"#task"+value['id']+"\").hide(); update_parent_selector(" + value['id'] + ", " + value['parent'] + ")'><i class='material-icons tiny'>edit</i></a> " + 
             "<a href='#' onclick='if(confirm(\"Are you sure you want to remove the task, and all subtasks?\")) remove_task(" + value['id'] + ", " + parent_id + "); '><i class='material-icons tiny'>close</i></a> " + 
-            "<input type='checkbox' onclick='if(confirm(\"Are you sure you want to change the conclusion status of the task, and all subtasks?\")) update_task_conclusion_status(" + value['id'] + ", " + parent_id + "); ' " + status + " /> ";
+            "<a href='#' onclick='update_running_status(" + value['id'] + ")'><i id='running_status_icon" + value['id'] + "' class='material-icons tiny'>" + running_icon + "</i></a> " +
+            "<a href='#' onclick='if(confirm(\"Are you sure you want to change the conclusion status of the task, and all subtasks?\")) update_task_conclusion_status(" + value['id'] + ", " + parent_id + ");'><i class='material-icons tiny'>" + icon + "</i></a> ";
             
     if (value['observations'])
     {
@@ -57,6 +73,18 @@ function create_task_html(value, parent_id)
 
     return str;
 }
+
+
+function update_running_status(task_id)
+{
+    $.ajax({method: "POST", url: "php/update_running_status.php", data: {"task_id": task_id}}).done(function(data) { 
+        if (data == 0 || data == 1) 
+            $("#running_status_icon" + task_id).html(get_running_icon_by_status(data));
+        else
+            alert("fail!");
+    });
+}
+
 
 function update_parent_selector(task_id, parent_id)
 {
@@ -75,18 +103,42 @@ function update_parent_selector(task_id, parent_id)
     });
 }
 
+
+function create_class_options(selected_item)
+{
+    classes = ["Development", "Reading", "Skimming", "Experimenting", "Studying", "Planning", "Bureaucracy", "Miscelaneous"];
+    str = "";
+    
+    for (i = 0; i < classes.length; i++)
+    {
+        str += "<option value=" + i + " ";
+        if (i == selected_item)
+            str += "selected";
+        str += ">" + classes[i] + "</option>\n";
+    }
+    
+    if (selected_item == 100)
+        str += "<option value=100 selected>Unitialized</option>"
+    
+    return str;
+}
+
+
 function add_form(parent_id)
 {
     $("#form_" + parent_id).html(
         "<a href='#' onclick='$(\"#form_" + parent_id + "\").html(\"\")'><i class='material-icons tiny'>remove</i></a>" + 
         "<input type='text' id='new_name" + parent_id + "' /> " +
         "<input type='date' id='new_deadline" + parent_id + "' /> " + 
-        "<input type='text' id='new_observations" + parent_id + "' /> " + 
+        "<input type='text' id='new_observations" + parent_id + "' /> " +
+        "<select id='new_class" + parent_id + "' > " + create_class_options(-1) + " </select>" + 
+        "<input type='text' id='new_duration" + parent_id + "' /> hours " +  
         "<input onClick='save_task(" + parent_id + ")' type='button' value='Add' />"
     );
 
     $("#new_name" + parent_id).focus();
 }
+
 
 function add_subtasks_to_container(name, parent_id)
 {
@@ -106,11 +158,13 @@ function add_subtasks_to_container(name, parent_id)
     });
 }
 
+
 function reload_subtasks(parent_id)
 {
     name = '#subtasks' + parent_id
     add_subtasks_to_container(name, parent_id);
 }
+
 
 function toggle_subtasks(parent_id)
 {
@@ -132,10 +186,12 @@ function toggle_subtasks(parent_id)
 
 }
 
+
 function list_root_tasks()
 {
     add_subtasks_to_container('#subtasks0', '0')
 }
+
 
 function list_next_deadlines()
 {
@@ -176,13 +232,16 @@ function list_next_deadlines()
     });
 }
 
+
 function save_task(parent_id)
 {
     $.ajax({method: "POST", url: "php/savetask.php", 
         data: {"parent_id": parent_id,
                 "name": $("#new_name" + parent_id).val(), 
                 "deadline": $("#new_deadline" + parent_id).val(), 
-                "observations": $("#new_observations" + parent_id).val()
+                "observations": $("#new_observations" + parent_id).val(),
+                "class": $("#new_class" + parent_id).val(),
+                "duration": $("#new_duration" + parent_id).val(),                                
         },
     }).done(function(data){
         var result = $.parseJSON(data);
@@ -194,6 +253,7 @@ function save_task(parent_id)
     });
 }
 
+
 function update_task(id, parent_id)
 {
     $.ajax({method: "POST", url: "php/updatetask.php", 
@@ -202,6 +262,8 @@ function update_task(id, parent_id)
                 "deadline": $("#edit_new_deadline" + id).val(), 
                 "observations": $("#edit_new_observations" + id).val(),
                 "parent": $("#edit_new_parent" + id).val(),
+                "class": $("#edit_new_class" + id).val(),                                
+                "duration": $("#edit_new_duration" + id).val(),
         },
     }).done(function(data){
         var result = $.parseJSON(data);
@@ -220,6 +282,7 @@ function update_task(id, parent_id)
     });
 }
 
+
 function update_task_conclusion_status(id, parent_id)
 {
     $.ajax({method: "POST", 
@@ -234,12 +297,14 @@ function update_task_conclusion_status(id, parent_id)
     });
 }
 
+
 function toggle_view_complete_tasks()
 {
     $.ajax({method: "POST", url: "php/toggle_view.php", data: {"which": "view_complete"}}).done(function(data){
         reload_subtasks(0);
     });
 }
+
 
 function toggle_view_next_deadlines()
 {
@@ -256,6 +321,4 @@ function toggle_view_next_deadlines()
         }
     });
 }
-
-
 

@@ -26,7 +26,7 @@
         for ($i = 0; $i < $n; $i++)
             $result = $result && remove_task($tasks[$i]['id'], $user_id);
 
-        $query = "DELETE FROM task WHERE id='$id' AND user_id='$user_id';";
+        $query = "UPDATE task SET status='2' WHERE id='$id' AND user_id='$user_id';";
         $result = $result && run_query($query);
         
         return $result;

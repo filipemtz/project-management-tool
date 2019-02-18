@@ -1,12 +1,21 @@
 <?php 
 
 session_start();
+require_once("php/cookies.php");
 
-if (!isset($_SESSION['user_data']))
+if (!isset($_SESSION["user_data"]))
 {
-    header('Location: /todolist/login.php');
-    die();
+    $userdata = load_login_data_from_cookies();
+    
+    if (isset($userdata))
+        $_SESSION["user_data"] = $userdata;
+    else
+    {
+        header("Location: /todolist/login.php");
+        die();
+    }
 }
+
 ?>
 
 <html>
@@ -79,6 +88,14 @@ if (isset($_SESSION['view_next_deadlines']))
 $(function(){
     list_root_tasks();
 
+    setInterval(function() { 
+        $.ajax({method: "POST", url: "php/user_is_logged.php"}).done(function(data) {
+            if (data == 0) {
+                window.location.replace('php/logout.php');
+            }
+        });
+    }, 5000);
+    
     <?php 
 
     $view_deadlines_active = FALSE;
@@ -98,7 +115,7 @@ $(function(){
         echo "$('#main').css('width', '99%');";
     }
 
-    ?> 
+    ?>     
 }); 
 </script> 
 
