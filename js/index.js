@@ -106,7 +106,7 @@ function update_parent_selector(task_id, parent_id)
 
 function create_class_options(selected_item)
 {
-    classes = ["Development", "Reading", "Skimming", "Experimenting", "Studying", "Planning", "Bureaucracy", "Miscelaneous"];
+    classes = ["Development", "Reading", "Skimming", "Experimenting", "Studying", "Planning", "Bureaucracy", "Writting", "Maintenance", "Miscelaneous"];
     str = "";
     
     for (i = 0; i < classes.length; i++)
