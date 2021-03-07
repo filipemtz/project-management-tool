@@ -1,5 +1,9 @@
 # todolist_app
 
+This is a simple todo list app that allow hierarchical activities.
+
+## Installation Instructions
+
 Install apache, mysql, and php
 
     sudo apt-get install apache2 mysql-server php \
