@@ -1,6 +1,6 @@
-# todolist_app
+# Project Management Tool
 
-This is a simple todo list app that allow hierarchical activities.
+This is an open source project management tool that allow hierarchical activities.
 
 ## Installation Instructions
 
