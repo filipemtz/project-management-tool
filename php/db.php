@@ -5,8 +5,8 @@ session_start();
 function run_query($query)
 {
     $host         = "localhost";
-    $username     = "root";
-    $password     = "123123qwe";
+    $username     = "<username>";
+    $password     = "<password>";
     $dbname       = "todolist_db";
 
     $conn = new mysqli($host, $username, $password, $dbname);

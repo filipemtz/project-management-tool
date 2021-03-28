@@ -4,7 +4,16 @@ session_start();
 require_once('db.php');
 require_once('cookies.php');
 
+// Remove previous login information
+// TODO: create a function to avoid having to replicate the code in "logout.php".
+unset($_SESSION['user_data']);
+unset($_SESSION['view_next_deadlines']);
+unset($_SESSION['view_complete']);
+destroy_login_cookies();
+
+
 // TODO: basic checks
+// ...
 
 // insert user into the database
 $name = $_POST['login_username'];

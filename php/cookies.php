@@ -1,6 +1,6 @@
 <?php
 
-$secret_string = "secret_string";
+$secret_string = "<secret_string>";
 
 function create_login_cookies($user_data)
 {

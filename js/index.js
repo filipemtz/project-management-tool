@@ -40,10 +40,11 @@ function create_task_html(value, parent_id)
         "<div id='edit_form_" + value['id']+ "' style='display:none' >" +
         "<a href='#' onclick='$(\"#task" + value['id'] + "\").show(); $(\"#edit_form_" + value['id'] + "\").hide();'><i class='material-icons tiny'>remove</i></a>" + 
         "<input type='text' id='edit_new_name" + value['id'] + "' value='" + value['name'] + "' /> " +
-        "<input type='date' id='edit_new_deadline" + value['id'] + "' value='" + value['deadline'] + "' /> " + 
+        "<input type='date' size='11' id='edit_new_deadline" + value['id'] + "' value='" + value['deadline'] + "' /> " + 
         "<input type='text' id='edit_new_observations" + value['id'] + "' value='" + value['observations'] + "' /> " +
         "<select id='edit_new_class" + value['id'] + "'>" + create_class_options(value['class']) + "</select> " + 
-        "<input type='text' id='edit_new_duration" + value['id'] + "' value='" + value['estimated_duration'] + "' /> hours " +
+        "<input type='text' size='3' id='edit_new_duration" + value['id'] + "' value='" + value['estimated_duration'] + "' /> h " +
+        "<input type='text' size='3' id='edit_new_act_duration" + value['id'] + "' value='" + value['actual_duration'] + "' /> h " +
         "<select id='edit_new_parent" + value['id'] + "'><option value='" + value['parent'] + "'>--</option><option value='0'>Root</option></select> " + 
         "<input onClick='update_task(" + value['id'] + ", " + parent_id + ");' type='button' value='Update' />" +
         "</div>";
@@ -55,7 +56,7 @@ function create_task_html(value, parent_id)
             "(<span id='task_"+value['id']+"_deadline'>"+ value['deadline'] + "</span>)</a> " +
             "<a href='#' onclick='$(\"#edit_form_" + value['id'] + "\").show(); $(\"#new_name"+value['id']+"\").focus(); $(\"#task"+value['id']+"\").hide(); update_parent_selector(" + value['id'] + ", " + value['parent'] + ")'><i class='material-icons tiny'>edit</i></a> " + 
             "<a href='#' onclick='if(confirm(\"Are you sure you want to remove the task, and all subtasks?\")) remove_task(" + value['id'] + ", " + parent_id + "); '><i class='material-icons tiny'>close</i></a> " + 
-            "<a href='#' onclick='update_running_status(" + value['id'] + ")'><i id='running_status_icon" + value['id'] + "' class='material-icons tiny'>" + running_icon + "</i></a> " +
+            "<a href='#' onclick='update_running_status(" + value['id'] + ", " + parent_id + ")'><i id='running_status_icon" + value['id'] + "' class='material-icons tiny'>" + running_icon + "</i></a> " +
             "<a href='#' onclick='if(confirm(\"Are you sure you want to change the conclusion status of the task, and all subtasks?\")) update_task_conclusion_status(" + value['id'] + ", " + parent_id + ");'><i class='material-icons tiny'>" + icon + "</i></a> ";
             
     if (value['observations'])
@@ -75,11 +76,14 @@ function create_task_html(value, parent_id)
 }
 
 
-function update_running_status(task_id)
+function update_running_status(task_id, parent_id)
 {
     $.ajax({method: "POST", url: "php/update_running_status.php", data: {"task_id": task_id}}).done(function(data) { 
         if (data == 0 || data == 1) 
+        {
             $("#running_status_icon" + task_id).html(get_running_icon_by_status(data));
+            reload_subtasks(parent_id);
+        }
         else
             alert("fail!");
     });
@@ -264,6 +268,7 @@ function update_task(id, parent_id)
                 "parent": $("#edit_new_parent" + id).val(),
                 "class": $("#edit_new_class" + id).val(),                                
                 "duration": $("#edit_new_duration" + id).val(),
+                "act_duration": $("#edit_new_act_duration" + id).val(),
         },
     }).done(function(data){
         var result = $.parseJSON(data);

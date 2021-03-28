@@ -28,7 +28,10 @@
     $query = "UPDATE task SET running_status='$new_status', $additional_update WHERE id='$task_id' AND user_id='$user_id';";
     $query_result = run_query($query);
 
-    if ($query_result) echo $new_status;
+    if ($query_result) 
+    {
+        echo $new_status;
+    }
     else echo "-1";
 
 ?>

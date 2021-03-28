@@ -27,7 +27,7 @@
         for ($i = 0; $i < $n; $i++)
             $result = $result && update_task_conclusion_status($tasks[$i]['id'], $user_id, $desired_status);
 
-        $query = "UPDATE task SET status=$desired_status WHERE (id='$id' AND user_id='$user_id');";
+        $query = "UPDATE task SET status=$desired_status, running_status='0' WHERE (id='$id' AND user_id='$user_id');";
         $result = $result && run_query($query);
         return $result;
     }
