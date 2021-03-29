@@ -75,6 +75,6 @@ Clone the repository to the directory /var/www/html.
 Create a new database using phpMyAdmin called todolist_db. 
 Import the tables' structures from sql/todolist_db.sql to the database.
 
-Access the site http://localhost/todolist_app .
+Access the site http://localhost/project-management-tool .
 
 
