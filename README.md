@@ -1,10 +1,10 @@
 # Project Management Tool [Discontinued]
 
 This is an open source project management tool that allow hierarchical activities.
+
 The project was **discontinued** after I discovered [Quire](https://quire.io/), an app that does exactly what I was seeking to implement.
 
 ![alt text](imgs/pm-demo.png "demo")
-
 
 ## Backlog
 
