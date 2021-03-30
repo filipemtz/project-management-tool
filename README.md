@@ -1,6 +1,10 @@
-# Project Management Tool
+# Project Management Tool [Discontinued]
 
 This is an open source project management tool that allow hierarchical activities.
+The project was **discontinued** after I discovered [Quire](https://quire.io/), an app that does exactly what I was seeking to implement.
+
+![alt text](imgs/pm-demo.png "demo")
+
 
 ## Backlog
 
@@ -15,7 +19,8 @@ This is an open source project management tool that allow hierarchical activitie
     - [ ] Scheduling strategy: Quicks/Easies first.
     - [ ] Scheduling strategy: Funs first.
     - [ ] Creation of custom scheduling for advanced users
-- [ ] Notifications of deadlines, changes in activities, etc.- [ ] Multitask operations (delete, etc.)
+- [ ] Notifications of deadlines, changes in activities, etc.
+- [ ] Multitask operations (delete, etc.)
 - [ ] Add a nice search tool for tasks, users, tags, etc.
 - [ ] Compute critical tasks based on dependencies and duration.
 - [ ] Compute the predicted date to finish the project in the best and worst case scenarios considering the current status of tasks.
