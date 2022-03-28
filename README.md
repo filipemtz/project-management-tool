@@ -3,6 +3,7 @@
 This is an open source project management tool that allow hierarchical activities.
 
 The project was **discontinued** after I discovered [Quire](https://quire.io/), an app that does exactly what I was seeking to implement.
+[Update] After using Quire for a while, the free version was not enough for my needs, and I decided to implement my own version of it using a web framework instead of starting from scratch as in this project. The link will be posted here soon.
 
 ![alt text](imgs/pm-demo.png "demo")
 
